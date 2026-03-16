@@ -1,28 +1,27 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
+import { colors, radius, typography, shadows, btnDanger } from '../theme'
 
-// Menús según rol
 const adminMenu = [
-  { label: 'Dashboard',      path: '/admin/dashboard',  icon: <GridIcon /> },
-  { label: 'Registrar',      path: '/admin/registrar',  icon: <FormIcon /> },
-  { label: 'Empleados',      path: '/admin/empleados',  icon: <UserIcon /> },
-  { label: 'Solicitudes',    path: '/admin/solicitudes',icon: <ListIcon /> },
-  { label: 'Contratos',      path: '/admin/contratos',  icon: <DocIcon /> },
-  { label: 'Notificaciones', path: '/admin/notifs',     icon: <BellIcon />, badge: 3 },
+  { label: 'Dashboard',      path: '/admin/dashboard',   icon: <GridIcon /> },
+  { label: 'Registrar',      path: '/admin/registrar',   icon: <FormIcon /> },
+  { label: 'Empleados',      path: '/admin/empleados',   icon: <UserIcon /> },
+  { label: 'Solicitudes',    path: '/admin/solicitudes', icon: <ListIcon /> },
+  { label: 'Contratos',      path: '/admin/contratos',   icon: <DocIcon />  },
+  { label: 'Notificaciones', path: '/admin/notifs',      icon: <BellIcon />, badge: 3 },
 ]
 
 const empleadoMenu = [
-  { label: 'Dashboard',          path: '/empleado/dashboard', icon: <GridIcon /> },
-  { label: 'Actividades',        path: '/empleado/actividades',icon: <ListIcon /> },
-  { label: 'Mis Contratos',      path: '/empleado/contratos', icon: <DocIcon /> },
-  { label: 'Solicitudes de pago',path: '/empleado/solicitudes',icon: <UserIcon /> },
-  { label: 'Historial',          path: '/empleado/historial', icon: <FormIcon /> },
-  { label: 'Notificaciones',     path: '/empleado/notifs',    icon: <BellIcon />, badge: 2 },
+  { label: 'Dashboard',           path: '/empleado/dashboard',  icon: <GridIcon /> },
+  { label: 'Actividades',         path: '/empleado/actividades',icon: <ListIcon /> },
+  { label: 'Mis Contratos',       path: '/empleado/contratos',  icon: <DocIcon />  },
+  { label: 'Solicitudes de pago', path: '/empleado/solicitudes',icon: <UserIcon /> },
+  { label: 'Historial',           path: '/empleado/historial',  icon: <FormIcon /> },
+  { label: 'Notificaciones',      path: '/empleado/notifs',     icon: <BellIcon />, badge: 2 },
 ]
 
-// Datos de usuario mockeados por rol
 const userData = {
-  admin:    { initials: 'SR', name: 'Santiago Rodríguez', role: 'Jefe RH' },
-  empleado: { initials: 'AG', name: 'Andrés Gómez',       role: '12840157' },
+  admin:    { initials: 'SR', name: 'Santiago Rodríguez', sub: 'Jefe RH' },
+  empleado: { initials: 'AG', name: 'Andrés Gómez',       sub: '12840157' },
 }
 
 export default function DashboardLayout({ role = 'empleado' }) {
@@ -31,52 +30,64 @@ export default function DashboardLayout({ role = 'empleado' }) {
   const user = userData[role]
 
   return (
-    <div className="flex h-screen bg-[#eef1f7] font-sans overflow-hidden">
+    <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', background: colors.bgApp, fontFamily: 'system-ui, sans-serif' }}>
 
       {/* ── Sidebar ── */}
-      <aside className="w-48 bg-[#0d2145] flex flex-col flex-shrink-0">
+      <aside style={{ width: '192px', background: colors.navy, display: 'flex', flexDirection: 'column', flexShrink: 0, boxShadow: shadows.sidebar }}>
 
         {/* Logo + usuario */}
-        <div className="px-4 py-5 border-b border-white/10">
-          <div className="flex items-center gap-2 mb-4">
+        <div style={{ padding: '20px 16px 16px', borderBottom: `1px solid ${colors.navyBorder}` }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
             <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-              <circle cx="11" cy="11" r="10" stroke="#F5C020" strokeWidth="1.5" fill="none" />
-              <path d="M7 11.5L9.8 14.5L15.5 8" stroke="#F5C020" strokeWidth="1.5"
+              <circle cx="11" cy="11" r="10" stroke={colors.primary} strokeWidth="1.5" fill="none" />
+              <path d="M7 11.5L9.8 14.5L15.5 8" stroke={colors.primary} strokeWidth="1.5"
                 strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            <span className="text-white text-base font-bold">Clarity</span>
+            <span style={{ color: colors.textWhite, fontSize: typography.lg, fontWeight: 700 }}>Clarity</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-full bg-yellow-400 flex items-center justify-center
-                            text-[#1a1a2e] font-bold text-xs flex-shrink-0">
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{
+              width: 36, height: 36, borderRadius: radius.full,
+              background: colors.primary, display: 'flex', alignItems: 'center',
+              justifyContent: 'center', color: colors.primaryText,
+              fontWeight: 700, fontSize: typography.sm, flexShrink: 0,
+            }}>
               {user.initials}
             </div>
             <div>
-              <p className="text-white text-xs font-semibold leading-tight">{user.name}</p>
-              <p className="text-white/40 text-[10px]">{user.role}</p>
+              <p style={{ color: colors.textWhite, fontSize: typography.sm, fontWeight: 600, lineHeight: 1.3 }}>{user.name}</p>
+              <p style={{ color: colors.textWhite40, fontSize: '10px' }}>{user.sub}</p>
             </div>
           </div>
         </div>
 
-        {/* Navegación */}
-        <nav className="flex-1 py-2 overflow-y-auto">
+        {/* Nav */}
+        <nav style={{ flex: 1, padding: '8px 0', overflowY: 'auto' }}>
           {menu.map(item => (
             <NavLink
               key={item.path}
               to={item.path}
-              className={({ isActive }) =>
-                `flex items-center gap-2.5 text-xs py-2.5 transition-all
-                 ${isActive
-                   ? 'bg-yellow-400 text-[#1a1a2e] font-semibold mx-2.5 rounded-lg px-3'
-                   : 'text-white/55 hover:text-white hover:bg-white/5 px-4'
-                 }`
-              }
+              style={({ isActive }) => ({
+                display: 'flex', alignItems: 'center', gap: 10,
+                fontSize: typography.sm, textDecoration: 'none',
+                padding: isActive ? '9px 12px' : '9px 16px',
+                margin: isActive ? '2px 10px' : '2px 0',
+                borderRadius: isActive ? radius.md : 0,
+                background: isActive ? colors.primary : 'transparent',
+                color: isActive ? colors.primaryText : colors.textWhite60,
+                fontWeight: isActive ? 600 : 400,
+                transition: 'all 0.15s',
+              })}
             >
-              <span className="w-3.5 h-3.5 flex-shrink-0">{item.icon}</span>
-              <span className="flex-1">{item.label}</span>
+              <span style={{ width: 14, height: 14, flexShrink: 0 }}>{item.icon}</span>
+              <span style={{ flex: 1 }}>{item.label}</span>
               {item.badge && (
-                <span className="bg-red-500 text-white text-[9px] font-bold
-                                 w-4 h-4 rounded-full flex items-center justify-center">
+                <span style={{
+                  background: colors.badge, color: colors.badgeText,
+                  fontSize: '9px', fontWeight: 700,
+                  width: 16, height: 16, borderRadius: radius.full,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
                   {item.badge}
                 </span>
               )}
@@ -85,41 +96,47 @@ export default function DashboardLayout({ role = 'empleado' }) {
         </nav>
 
         {/* Cerrar sesión */}
-        <div className="px-3.5 pb-4">
+        <div style={{ padding: '0 14px 16px' }}>
           <button
             onClick={() => navigate('/')}
-            className="w-full py-2 bg-red-600 hover:bg-red-700 text-white text-xs
-                       font-medium rounded-lg transition"
+            style={btnDanger}
+            onMouseEnter={e => e.currentTarget.style.background = colors.dangerHover}
+            onMouseLeave={e => e.currentTarget.style.background = colors.danger}
           >
             Cerrar Sesión
           </button>
         </div>
       </aside>
 
-      {/* ── Contenido principal ── */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      {/* ── Contenido ── */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 
         {/* Header */}
-        <header className="bg-white border-b border-gray-200 px-5 py-3 flex items-center gap-3">
+        <header style={{
+          background: colors.bgCard,
+          borderBottom: `1px solid ${colors.border}`,
+          padding: '12px 20px', display: 'flex', alignItems: 'center', gap: 12,
+        }}>
           <input
             placeholder="Buscar..."
-            className="flex-1 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2
-                       text-xs outline-none focus:ring-2 focus:ring-yellow-400 transition"
+            style={{
+              flex: 1, padding: '8px 12px',
+              border: `1px solid ${colors.borderInput}`,
+              borderRadius: radius.md, fontSize: typography.sm,
+              outline: 'none', background: colors.bgInput, fontFamily: 'inherit',
+            }}
+            onFocus={e => { e.target.style.borderColor = colors.borderFocus; e.target.style.boxShadow = `0 0 0 3px ${colors.focusShadow}` }}
+            onBlur={e =>  { e.target.style.borderColor = colors.borderInput;  e.target.style.boxShadow = 'none' }}
           />
-          <button className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center
-                             text-sm hover:bg-gray-200 transition">
-            🔧
-          </button>
-          <button className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center
-                             text-sm hover:bg-gray-200 transition relative">
-            📬
-            <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full
-                             border-2 border-white" />
-          </button>
+          <button style={{ width: 32, height: 32, background: colors.bgInput, border: 'none', borderRadius: radius.full, cursor: 'pointer', fontSize: 14 }}>🔧</button>
+          <div style={{ position: 'relative' }}>
+            <button style={{ width: 32, height: 32, background: colors.bgInput, border: 'none', borderRadius: radius.full, cursor: 'pointer', fontSize: 14 }}>📬</button>
+            <span style={{ position: 'absolute', top: -2, right: -2, width: 10, height: 10, background: colors.badge, borderRadius: radius.full, border: `2px solid ${colors.bgCard}` }} />
+          </div>
         </header>
 
         {/* Página activa */}
-        <main className="flex-1 overflow-y-auto p-6">
+        <main style={{ flex: 1, overflowY: 'auto', padding: 24 }}>
           <Outlet />
         </main>
       </div>
@@ -127,55 +144,41 @@ export default function DashboardLayout({ role = 'empleado' }) {
   )
 }
 
-// ── Iconos SVG inline ──────────────────────────────────────────────
+// ── Iconos ───────────────────────────────────────────────────────────
 function GridIcon() {
-  return (
-    <svg viewBox="0 0 14 14" fill="none" className="w-full h-full">
-      <rect x="1" y="1" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.3" />
-      <rect x="8" y="1" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.3" />
-      <rect x="1" y="8" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.3" />
-      <rect x="8" y="8" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.3" />
-    </svg>
-  )
+  return <svg viewBox="0 0 14 14" fill="none" style={{ width: '100%', height: '100%' }}>
+    <rect x="1" y="1" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.3" />
+    <rect x="8" y="1" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.3" />
+    <rect x="1" y="8" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.3" />
+    <rect x="8" y="8" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.3" />
+  </svg>
 }
 function FormIcon() {
-  return (
-    <svg viewBox="0 0 14 14" fill="none" className="w-full h-full">
-      <rect x="1" y="2" width="12" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.3" />
-      <path d="M4 6h6M4 8.5h3.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
-    </svg>
-  )
+  return <svg viewBox="0 0 14 14" fill="none" style={{ width: '100%', height: '100%' }}>
+    <rect x="1" y="2" width="12" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.3" />
+    <path d="M4 6h6M4 8.5h3.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+  </svg>
 }
 function UserIcon() {
-  return (
-    <svg viewBox="0 0 14 14" fill="none" className="w-full h-full">
-      <circle cx="7" cy="4.5" r="2.5" stroke="currentColor" strokeWidth="1.3" />
-      <path d="M2 12c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-    </svg>
-  )
+  return <svg viewBox="0 0 14 14" fill="none" style={{ width: '100%', height: '100%' }}>
+    <circle cx="7" cy="4.5" r="2.5" stroke="currentColor" strokeWidth="1.3" />
+    <path d="M2 12c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+  </svg>
 }
 function ListIcon() {
-  return (
-    <svg viewBox="0 0 14 14" fill="none" className="w-full h-full">
-      <path d="M2 3.5h10M2 7h10M2 10.5h6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-    </svg>
-  )
+  return <svg viewBox="0 0 14 14" fill="none" style={{ width: '100%', height: '100%' }}>
+    <path d="M2 3.5h10M2 7h10M2 10.5h6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+  </svg>
 }
 function DocIcon() {
-  return (
-    <svg viewBox="0 0 14 14" fill="none" className="w-full h-full">
-      <rect x="1" y="1" width="12" height="12" rx="1.5" stroke="currentColor" strokeWidth="1.3" />
-      <path d="M4 5h6M4 7.5h6M4 10h4" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
-    </svg>
-  )
+  return <svg viewBox="0 0 14 14" fill="none" style={{ width: '100%', height: '100%' }}>
+    <rect x="1" y="1" width="12" height="12" rx="1.5" stroke="currentColor" strokeWidth="1.3" />
+    <path d="M4 5h6M4 7.5h6M4 10h4" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+  </svg>
 }
 function BellIcon() {
-  return (
-    <svg viewBox="0 0 14 14" fill="none" className="w-full h-full">
-      <path d="M7 2C5.34 2 4 3.34 4 5v2.5L2.5 9.5h9L10 7.5V5c0-1.66-1.34-3-3-3z"
-        stroke="currentColor" strokeWidth="1.3" />
-      <path d="M5.5 9.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5"
-        stroke="currentColor" strokeWidth="1.3" />
-    </svg>
-  )
+  return <svg viewBox="0 0 14 14" fill="none" style={{ width: '100%', height: '100%' }}>
+    <path d="M7 2C5.34 2 4 3.34 4 5v2.5L2.5 9.5h9L10 7.5V5c0-1.66-1.34-3-3-3z" stroke="currentColor" strokeWidth="1.3" />
+    <path d="M5.5 9.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5" stroke="currentColor" strokeWidth="1.3" />
+  </svg>
 }
