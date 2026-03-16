@@ -12,12 +12,12 @@ export default function AppRouter() {
 
         {/* Rutas Admin */}
         <Route element={<DashboardLayout role="admin" />}>
-          <Route path="/admin/registrar" element={<RegistrarTrabajador />} />
+          <Route path="/Admin/registrar" element={<RegistrarTrabajador />} />
         </Route>
 
         {/* Rutas Empleado */}
         <Route element={<DashboardLayout role="empleado" />}>
-          <Route path="/empleado/contratos" element={<MisContratos />} />
+          <Route path="/Empleado/contratos" element={<MisContratos />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
