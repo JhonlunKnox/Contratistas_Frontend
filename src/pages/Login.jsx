@@ -8,8 +8,8 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (form.email.includes('admin')) navigate('/admin/registrar')
-    else navigate('/empleado/dashboard')
+    if (form.email.includes('admin')) navigate('/admin/dashboard')
+    else navigate('/contratista/dashboard')
   }
 
   return (
@@ -72,7 +72,7 @@ export default function Login() {
         </form>
 
         <p style={{ marginTop: 24, color: 'rgba(255,255,255,0.2)', fontSize: typography.xs }}>
-          Tip: usa "admin@..." para jefe, cualquier otro para empleado
+          Tip: usa "admin@..." para jefe, cualquier otro para contratista
         </p>
       </div>
     </div>

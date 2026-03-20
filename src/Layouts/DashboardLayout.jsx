@@ -8,26 +8,26 @@ const adminMenu = [
   { label: 'Empleados',      path: '/admin/empleados',   icon: <UserIcon /> },
   { label: 'Solicitudes',    path: '/admin/solicitudes', icon: <ListIcon /> },
   { label: 'Contratos',      path: '/admin/contratos',   icon: <DocIcon />  },
-  { label: 'Notificaciones', path: '/admin/notifs',      icon: <BellIcon />, badge: 3 },
+  { label: 'Notificaciones', path: '/admin/notificaciones',      icon: <BellIcon />, badge: 3 },
 ]
 
-const empleadoMenu = [
-  { label: 'Dashboard',           path: '/empleado/dashboard',  icon: <GridIcon /> },
-  { label: 'Actividades',         path: '/empleado/actividades',icon: <ListIcon /> },
-  { label: 'Solicitudes de pago', path: '/empleado/solicitudes',icon: <UserIcon /> },
-  { label: 'Historial',           path: '/empleado/historial',  icon: <DocIcon />  },
-  { label: 'Notificaciones',      path: '/empleado/notifs',     icon: <BellIcon />, badge: 2 },
+const contratistasMenu = [
+  { label: 'Dashboard',           path: '/contratista/dashboard',  icon: <GridIcon /> },
+  { label: 'Actividades',         path: '/contratista/actividades',icon: <ListIcon /> },
+  { label: 'Solicitudes de pago', path: '/contratista/solicitudes',icon: <UserIcon /> },
+  { label: 'Historial',           path: '/contratista/historial',  icon: <DocIcon />  },
+  { label: 'Notificaciones',      path: '/contratista/notificaciones',     icon: <BellIcon />, badge: 2 },
 ]
 
 const userData = {
   admin:    { initials: 'SR', name: 'Santiago Rodríguez', sub: 'Jefe RH' },
-  empleado: { initials: 'AG', name: 'Andrés Gómez',       sub: '12840157' },
+  contratista: { initials: 'AG', name: 'Andrés Gómez',       sub: '12840157' },
 }
 
-export default function DashboardLayout({ role = 'empleado' }) {
+export default function DashboardLayout({ role = 'contratista' }) {
   const navigate = useNavigate()
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const menu = role === 'admin' ? adminMenu : empleadoMenu
+  const menu = role === 'admin' ? adminMenu : contratistasMenu
   const user = userData[role]
 
   return (
