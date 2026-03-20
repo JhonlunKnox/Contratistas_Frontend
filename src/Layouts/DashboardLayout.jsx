@@ -14,9 +14,8 @@ const adminMenu = [
 const empleadoMenu = [
   { label: 'Dashboard',           path: '/empleado/dashboard',  icon: <GridIcon /> },
   { label: 'Actividades',         path: '/empleado/actividades',icon: <ListIcon /> },
-  { label: 'Mis Contratos',       path: '/empleado/contratos',  icon: <DocIcon />  },
   { label: 'Solicitudes de pago', path: '/empleado/solicitudes',icon: <UserIcon /> },
-  { label: 'Historial',           path: '/empleado/historial',  icon: <FormIcon /> },
+  { label: 'Historial',           path: '/empleado/historial',  icon: <DocIcon />  },
   { label: 'Notificaciones',      path: '/empleado/notifs',     icon: <BellIcon />, badge: 2 },
 ]
 

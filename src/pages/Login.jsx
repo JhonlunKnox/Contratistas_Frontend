@@ -9,7 +9,7 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (form.email.includes('admin')) navigate('/admin/registrar')
-    else navigate('/empleado/contratos')
+    else navigate('/empleado/dashboard')
   }
 
   return (
