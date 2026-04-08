@@ -12,6 +12,8 @@ import Notificaciones from '../pages/Empleado/Notificaciones'
 import DashboardSupervisor from '../pages/Supervisor/DashboardSupervisor'
 import MisContratistas from '../pages/Supervisor/MisContratistas'
 import SolicitudesSupervisor from '../pages/Supervisor/SolicitudesSupervisor'
+// 👇 Importamos la nueva pantalla del Historial del Supervisor
+import HistorialSupervisor from '../pages/Supervisor/HistorialSupervisor' 
 
 export default function AppRouter() {
   return (
@@ -36,6 +38,8 @@ export default function AppRouter() {
           <Route path="dashboard"     element={<DashboardSupervisor />} />
           <Route path="contratistas"  element={<MisContratistas />} />
           <Route path="solicitudes"   element={<SolicitudesSupervisor />} />
+          {/* 👇 Añadimos la nueva ruta para el historial */}
+          <Route path="historial"     element={<HistorialSupervisor />} /> 
         </Route>
 
         {/* ── Admin / Gerente ── */}

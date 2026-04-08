@@ -56,7 +56,7 @@ export default function SolicitudesSupervisor() {
   return (
     <>
       <style>{`
-        .sol-wrap { max-width: 900px; }
+        .sol-wrap { width: 100%; }
 
         /* tabla */
         .sol-table-wrap {
