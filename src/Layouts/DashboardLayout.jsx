@@ -19,16 +19,21 @@ const empleadoMenu = [
   { label: 'Notificaciones',      path: '/empleado/notifs',     icon: <BellIcon />, badge: 2 },
 ]
 
-const userData = {
-  admin:    { initials: 'SR', name: 'Santiago Rodríguez', sub: 'Jefe RH' },
-  empleado: { initials: 'AG', name: 'Andrés Gómez',       sub: '12840157' },
+function getInitials(nombre = '') {
+  return nombre.split(' ').map(w => w[0]).filter(Boolean).slice(0, 2).join('').toUpperCase() || '??'
 }
 
 export default function DashboardLayout({ role = 'empleado' }) {
   const navigate = useNavigate()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const menu = role === 'admin' ? adminMenu : empleadoMenu
-  const user = userData[role]
+
+  const storedUser = JSON.parse(localStorage.getItem('user') || '{}')
+  const user = {
+    initials: getInitials(storedUser.nombre),
+    name: storedUser.nombre || '—',
+    sub: storedUser.correo || '—',
+  }
 
   return (
     <>

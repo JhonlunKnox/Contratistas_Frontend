@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { colors, radius, typography, cardStyle, formLabelStyle, inputStyle, inputFocusStyle, inputBlurStyle, btnSuccess } from '../../theme'
 
-const API_URL = 'http://localhost:5000'
+import { apiFetch } from '../../services/api'
 
 const initialForm = {
   nombre: '', correo: '', identificacion: '',
@@ -21,32 +21,22 @@ export default function RegistrarTrabajador() {
     setError('')
     setLoading(true)
     try {
-      const token = localStorage.getItem('token')
-      const res = await fetch(`${API_URL}/api/auth/register`, {
+      await apiFetch('/api/auth/register', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
         body: JSON.stringify({
-          nombre:        form.nombre,
-          correo:        form.correo,
+          nombre:         form.nombre,
+          correo:         form.correo,
           identificacion: form.identificacion,
           tipo_documento: form.tipo_documento || undefined,
-          rol:           form.rol,
-          password:      form.contrasena,
+          rol:            form.rol,
+          password:       form.contrasena,
         }),
       })
-      const data = await res.json()
-      if (!res.ok) {
-        setError(data.error || 'Error al registrar')
-        return
-      }
       setSuccess(true)
       setForm(initialForm)
       setTimeout(() => setSuccess(false), 3000)
-    } catch {
-      setError('No se pudo conectar con el servidor')
+    } catch (err) {
+      setError(err.message || 'No se pudo conectar con el servidor')
     } finally {
       setLoading(false)
     }

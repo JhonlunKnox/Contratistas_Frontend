@@ -10,15 +10,19 @@ const supervisorMenu = [
   { label: 'Notificaciones',    path: '/supervisor/notifs',       icon: <BellIcon />, badge: 13 },
 ]
 
-const supervisorUser = {
-  name: 'Santiago Rodríguez',
-  sub: '12840317',
-  initials: 'SR',
+function getInitials(nombre = '') {
+  return nombre.split(' ').map(w => w[0]).filter(Boolean).slice(0, 2).join('').toUpperCase() || '??'
 }
 
 export default function SupervisorLayout() {
   const navigate = useNavigate()
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const storedUser = JSON.parse(localStorage.getItem('user') || '{}')
+  const supervisorUser = {
+    name: storedUser.nombre || '—',
+    sub: storedUser.correo || '—',
+    initials: getInitials(storedUser.nombre),
+  }
 
   return (
     <>
