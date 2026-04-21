@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Outlet, NavLink, useNavigate } from 'react-router-dom'
+import { Outlet, NavLink, useNavigate, Navigate } from 'react-router-dom'
 import { colors, radius, typography, shadows, btnDanger } from '../theme'
 
 const adminMenu = [
@@ -23,12 +23,22 @@ function getInitials(nombre = '') {
   return nombre.split(' ').map(w => w[0]).filter(Boolean).slice(0, 2).join('').toUpperCase() || '??'
 }
 
+const ROLES_POR_LAYOUT = {
+  empleado: ['contratista'],
+  admin: ['admin', 'gerente'],
+}
+
 export default function DashboardLayout({ role = 'empleado' }) {
   const navigate = useNavigate()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const menu = role === 'admin' ? adminMenu : empleadoMenu
 
-  const storedUser = JSON.parse(localStorage.getItem('user') || '{}')
+  const token = localStorage.getItem('token')
+  const storedUser = JSON.parse(localStorage.getItem('user') || 'null')
+
+  if (!token || !storedUser || !ROLES_POR_LAYOUT[role]?.includes(storedUser.rol)) {
+    return <Navigate to="/" replace />
+  }
   const user = {
     initials: getInitials(storedUser.nombre),
     name: storedUser.nombre || '—',
@@ -121,7 +131,13 @@ export default function DashboardLayout({ role = 'empleado' }) {
           </nav>
 
           <div style={{ padding: '0 14px 16px' }}>
-            <button onClick={() => navigate('/')} style={btnDanger}
+            <button
+              onClick={() => {
+                localStorage.removeItem('token')
+                localStorage.removeItem('user')
+                navigate('/')
+              }}
+              style={btnDanger}
               onMouseEnter={e => e.currentTarget.style.background = colors.dangerHover}
               onMouseLeave={e => e.currentTarget.style.background = colors.danger}
             >

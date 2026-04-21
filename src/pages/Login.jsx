@@ -109,6 +109,13 @@ const ROL_ROUTES = {
   admin: "/admin/registrar",
 };
 
+// Qué roles del backend son válidos para cada plataforma del selector
+const ROLES_PERMITIDOS_POR_PLATAFORMA = {
+  contratista: ["contratista"],
+  supervisor: ["supervisor"],
+  gerente: ["gerente", "admin"],
+};
+
 export default function Login() {
   const navigate = useNavigate();
   const [selected, setSelected] = useState("contratista");
@@ -134,6 +141,11 @@ export default function Login() {
       const data = await res.json();
       if (!res.ok) {
         setError(data.error || "Error al iniciar sesión");
+        return;
+      }
+      const rolesPermitidos = ROLES_PERMITIDOS_POR_PLATAFORMA[selected] || [];
+      if (!rolesPermitidos.includes(data.user.rol)) {
+        setError("Credenciales incorrectas");
         return;
       }
       localStorage.setItem("token", data.token);

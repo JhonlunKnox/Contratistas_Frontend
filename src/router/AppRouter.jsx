@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom'
 import Login from '../pages/Login'
 import DashboardLayout from '../Layouts/DashboardLayout'
 import SupervisorLayout from '../Layouts/SupervisorLayout'
@@ -12,8 +12,17 @@ import Notificaciones from '../pages/Empleado/Notificaciones'
 import DashboardSupervisor from '../pages/Supervisor/DashboardSupervisor'
 import MisContratistas from '../pages/Supervisor/MisContratistas'
 import SolicitudesSupervisor from '../pages/Supervisor/SolicitudesSupervisor'
-// 👇 Importamos la nueva pantalla del Historial del Supervisor
-import HistorialSupervisor from '../pages/Supervisor/HistorialSupervisor' 
+import HistorialSupervisor from '../pages/Supervisor/HistorialSupervisor'
+
+function RutaProtegida({ rolesPermitidos }) {
+  const token = localStorage.getItem('token')
+  const user = JSON.parse(localStorage.getItem('user') || 'null')
+
+  if (!token || !user) return <Navigate to="/" replace />
+  if (!rolesPermitidos.includes(user.rol)) return <Navigate to="/" replace />
+
+  return <Outlet />
+}
 
 export default function AppRouter() {
   return (
@@ -22,30 +31,35 @@ export default function AppRouter() {
         <Route path="/" element={<Login />} />
 
         {/* ── Contratista (Empleado) ── */}
-        <Route path="/empleado" element={<DashboardLayout role="empleado" />}>
-          <Route index element={<Navigate to="dashboard" replace />} />
-          <Route path="dashboard"   element={<Dashboard />} />
-          <Route path="actividades" element={<Actividades />} />
-          <Route path="contratos"   element={<MisContratos />} />
-          <Route path="solicitudes" element={<Solicitudes />} />
-          <Route path="historial"   element={<Historial />} />
-          <Route path="notifs"      element={<Notificaciones />} />
+        <Route element={<RutaProtegida rolesPermitidos={['contratista']} />}>
+          <Route path="/empleado" element={<DashboardLayout role="empleado" />}>
+            <Route index element={<Navigate to="dashboard" replace />} />
+            <Route path="dashboard"   element={<Dashboard />} />
+            <Route path="actividades" element={<Actividades />} />
+            <Route path="contratos"   element={<MisContratos />} />
+            <Route path="solicitudes" element={<Solicitudes />} />
+            <Route path="historial"   element={<Historial />} />
+            <Route path="notifs"      element={<Notificaciones />} />
+          </Route>
         </Route>
 
         {/* ── Supervisor ── */}
-        <Route path="/supervisor" element={<SupervisorLayout />}>
-          <Route index element={<Navigate to="dashboard" replace />} />
-          <Route path="dashboard"     element={<DashboardSupervisor />} />
-          <Route path="contratistas"  element={<MisContratistas />} />
-          <Route path="solicitudes"   element={<SolicitudesSupervisor />} />
-          {/* 👇 Añadimos la nueva ruta para el historial */}
-          <Route path="historial"     element={<HistorialSupervisor />} /> 
+        <Route element={<RutaProtegida rolesPermitidos={['supervisor']} />}>
+          <Route path="/supervisor" element={<SupervisorLayout />}>
+            <Route index element={<Navigate to="dashboard" replace />} />
+            <Route path="dashboard"     element={<DashboardSupervisor />} />
+            <Route path="contratistas"  element={<MisContratistas />} />
+            <Route path="solicitudes"   element={<SolicitudesSupervisor />} />
+            <Route path="historial"     element={<HistorialSupervisor />} />
+          </Route>
         </Route>
 
         {/* ── Admin / Gerente ── */}
-        <Route path="/admin" element={<DashboardLayout role="admin" />}>
-          <Route index element={<Navigate to="registrar" replace />} />
-          <Route path="registrar" element={<RegistrarTrabajador />} />
+        <Route element={<RutaProtegida rolesPermitidos={['admin', 'gerente']} />}>
+          <Route path="/admin" element={<DashboardLayout role="admin" />}>
+            <Route index element={<Navigate to="registrar" replace />} />
+            <Route path="registrar" element={<RegistrarTrabajador />} />
+          </Route>
         </Route>
 
         {/* Redirects mayúsculas */}
